@@ -1,7 +1,7 @@
 from django.shortcuts import get_object_or_404
 from rest_framework import viewsets
 from posts.models import Post, Comment, Follow, Group
-from .serializers import PostSerializer, CommentSerializer, GroupSerializer
+from .serializers import PostSerializer, CommentSerializer, GroupSerializer, FollowSerializer
 
 
 class PostViewSet(viewsets.ModelViewSet):
@@ -27,3 +27,13 @@ class CommentViewSet(viewsets.ModelViewSet):
 class GroupViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Group.objects.all()
     serializer_class = GroupSerializer
+
+
+class FollowViewSet(viewsets.ModelViewSet):
+    serializer_class = FollowSerializer
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
+    def get_queryset(self):
+        return Follow.objects.filter(user=self.request.user)
