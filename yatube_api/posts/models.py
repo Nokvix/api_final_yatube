@@ -24,3 +24,21 @@ class Comment(models.Model):
     text = models.TextField()
     created = models.DateTimeField(
         'Дата добавления', auto_now_add=True, db_index=True)
+
+
+class Follow(models.Model):
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='folower',
+        verbose_name='Кто подписан'
+    )
+    following = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='folowing',
+        verbose_name='На кого подписан'
+    )
+
+    def __str__(self):
+        return f'{self.user} подписан на {self.following}'
