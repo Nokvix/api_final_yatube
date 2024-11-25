@@ -19,7 +19,7 @@ class CommentSerializer(serializers.ModelSerializer):
     author = serializers.SlugRelatedField(
         read_only=True, slug_field='username'
     )
-    post = serializers.StringRelatedField(
+    post = serializers.PrimaryKeyRelatedField(
         read_only=True
     )
 
@@ -28,7 +28,7 @@ class CommentSerializer(serializers.ModelSerializer):
         model = Comment
 
 
-class GroupSerializer(serializers.ReadOnlyField):
+class GroupSerializer(serializers.ModelSerializer):
     class Meta:
         fields = '__all__'
         model = Group
@@ -58,5 +58,7 @@ class FollowSerializer(serializers.ModelSerializer):
 
     def validate(self, attrs):
         if attrs['user'] == attrs['following']:
-            raise serializers.ValidationError('Подписаться на самого себя нельзя!')
+            raise serializers.ValidationError(
+                'Подписаться на самого себя нельзя!'
+            )
         return attrs

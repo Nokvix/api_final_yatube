@@ -6,9 +6,13 @@ from .views import PostViewSet, CommentViewSet, GroupViewSet, FollowViewSet
 router = SimpleRouter()
 
 router.register('posts', PostViewSet, basename='posts')
-router.register(r'posts/(?P<post_id>\d+)/comments', CommentViewSet, basename='comments')
 router.register('groups', GroupViewSet, basename='groups')
 router.register('follow', FollowViewSet, basename='follows')
+router.register(
+    r'posts/(?P<post_id>\d+)/comments',
+    CommentViewSet,
+    basename='comments'
+)
 
 urlpatterns = [
     path('v1/', include('djoser.urls')),
